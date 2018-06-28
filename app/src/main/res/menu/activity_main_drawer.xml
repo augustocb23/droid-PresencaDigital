@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    tools:showIn="navigation_view">
+
+    <item
+        android:id="@+id/turmas"
+        android:title="@string/classes"
+        >
+        <menu android:icon="@drawable/ic_group_black_24dp">
+
+        </menu>
+    </item>
+
+    <item
+        android:id="@+id/action_class_add"
+        android:checkableBehavior="single"
+        android:icon="@drawable/ic_group_add_black_24dp"
+        android:title="@string/action_turma_add" />
+
+</menu>
