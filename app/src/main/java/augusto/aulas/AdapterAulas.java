@@ -40,7 +40,7 @@ public class AdapterAulas extends BaseAdapter {
         tema.setText(aula.toString());
         //define a data
         TextView data = view.findViewById(R.id.lesson_date);
-        data.setText(new SimpleDateFormat("DD/MM/yyyy",
+        data.setText(new SimpleDateFormat("EEE dd/MMM/yyyy",
                 Locale.getDefault()).format(aula.getData()));
         return view;
     }

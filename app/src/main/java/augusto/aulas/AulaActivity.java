@@ -1,6 +1,7 @@
 package augusto.aulas;
 
 import android.app.DialogFragment;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -89,8 +90,10 @@ public class AulaActivity extends AppCompatActivity implements DataDialog.Dialog
                     return false;
                 }
                 aula.salva(getApplicationContext(), turma);
+                Intent result = new Intent();
+                result.putExtra("codigo", turma.getCodigo());
+                setResult(RESULT_OK, result);
                 finish();
-                Toast.makeText(getApplicationContext(), R.string.lesson_saved, Toast.LENGTH_LONG).show();
                 break;
         }
 

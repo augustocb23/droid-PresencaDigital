@@ -50,7 +50,7 @@ class AdapterFaltas extends BaseAdapter {
         if (aluno.getPresencas() == null)
             faltas.setText(null);
         else
-            faltas.setText(String.format(view.getResources().getString(R.string.student_absence), aluno.getPresencas()));
+            faltas.setText(String.format(view.getResources().getString(R.string.student_absences), aluno.getPresencas()));
         return view;
     }
 

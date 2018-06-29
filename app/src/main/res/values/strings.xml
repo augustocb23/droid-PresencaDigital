@@ -32,7 +32,7 @@
     <string name="lesson_theme">Tema da aula</string>
     <string name="lesson_date">Data da aula</string>
     <string name="hold_to_change">Toque e segure para alternar presença</string>
-    <string name="student_absence">%1$d presencas</string>
+    <string name="student_absences">%1$d faltas</string>
     <string name="lesson_delete">Excluir aula</string>
     <string name="lesson_saved">Aula salva</string>
     <string name="lesson_theme_add">Informe o tema da aula</string>
@@ -47,4 +47,5 @@
     <string name="student_remove_question">Tem certeza que deseja remover %1$s da turma %2$s?\nTodas as frequências do aluno serão perdidas</string>
     <string name="yes">Sim</string>
     <string name="no">Não</string>
+    <string name="student_add">O novo aluno receberá presença em todas as aulas anteriores</string>
 </resources>

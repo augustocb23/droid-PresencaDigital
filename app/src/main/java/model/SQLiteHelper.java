@@ -146,10 +146,10 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         //altera a aula
         values.put(AULA_TEMA, aula.toString());
         values.put(AULA_DATA, aula.getData().getTime());
-        conn.update(AULA, values, AULA_COD + "=" + aula.getCodigo(), null);
+        conn.update(AULA, values, AULA_COD + '=' + aula.getCodigo(), null);
         values.clear();
         //apaga todos os alunos
-        conn.delete(FREQUENCIA, AULA_COD + "=" + aula.getCodigo(), null);
+        conn.delete(FREQUENCIA, AULA_COD + '=' + aula.getCodigo(), null);
         //insere os alunos
         for (Aluno aluno : turma.getAlunos()) {
             values.put(AULA_COD, aula.getCodigo());
@@ -157,7 +157,37 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             conn.insert(FREQUENCIA, null, values);
             values.clear();
         }
-        conn.close();
+    }
+
+    public static void editaTurma(Context context, Turma turma) {
+        SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //altera o nome da turma
+        values.put(TURMA_NOME, turma.toString());
+        conn.update(TURMA, values, TURMA_COD + '=' + turma.getCodigo(), null);
+        values.clear();
+        //apaga os alunos da lista de removidos
+        for (Aluno aluno : turma.getRemovidos()) {
+            conn.delete(ALUNO, ALUNO_COD + '=' + aluno.getCodigo(), null);
+            conn.delete(FREQUENCIA, ALUNO_COD + '=' + aluno.getCodigo(), null);
+        }
+        //cadastra os novos alunos
+        for (Aluno aluno : turma.getAlunos()) {
+            if (aluno.getCodigo() == -1) {
+                //insere o aluno
+                values.put(ALUNO_NOME, aluno.toString());
+                values.put(TURMA_COD, turma.getCodigo());
+                conn.insert(ALUNO, null, values);
+                values.clear();
+                //marca presença em todas as aulas
+                for (Aula aula : turma.getAulas()) {
+                    values.put(AULA_COD, aula.getCodigo());
+                    values.put(ALUNO_COD, aluno.getCodigo());
+                    conn.insert(FREQUENCIA, null, values);
+                    values.clear();
+                }
+            }
+        }
     }
 
     public static ArrayList<Turma> listaTurmas(Context context) {

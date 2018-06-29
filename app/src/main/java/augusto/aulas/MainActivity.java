@@ -25,6 +25,7 @@ import model.Turma;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     private final int CLASS_CREATE = 0;
+    private final int LESSON_EDIT = 1;
     Turma turma;
     ArrayList<Turma> lista_turmas;
     AdapterAulas adapter;
@@ -43,7 +44,7 @@ public class MainActivity extends AppCompatActivity
                 Intent i = new Intent(getApplicationContext(), AulaActivity.class);
                 i.putExtra("codigo", turma.getAulas().get(position).getCodigo());
                 i.putExtra("turma", turma.getCodigo());
-                startActivity(i);
+                startActivityForResult(i, LESSON_EDIT);
             }
         });
         //configura os dados no cabeçalho da barra lateral
@@ -51,7 +52,8 @@ public class MainActivity extends AppCompatActivity
         TextView name = navigationView.getHeaderView(0).findViewById(R.id.class_name);
         name.setText(turma.toString());
         TextView count = navigationView.getHeaderView(0).findViewById(R.id.lessons_count);
-        count.setText(String.format(getResources().getString(R.string.lessons_count), turma.getAulas().size()));
+        count.setText(String.format(getResources().getString(R.string.lessons_count),
+                turma.getAulas().size()));
     }
 
     private void carregaTurmas() {
@@ -75,7 +77,18 @@ public class MainActivity extends AppCompatActivity
                     if (codigo != -1)
                         turma = Turma.carrega(this.getApplicationContext(), codigo);
                     carregaTurmas();
-                    Toast.makeText(this.getApplicationContext(), R.string.class_saved, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this.getApplicationContext(), R.string.class_saved,
+                            Toast.LENGTH_SHORT).show();
+                }
+                break;
+            case LESSON_EDIT:
+                if (resultCode == RESULT_OK) {
+                    int codigo = data.getIntExtra("codigo", -1);
+                    //atualiza os dados da turma
+                    turma = Turma.carrega(this.getApplicationContext(), codigo);
+                    carregaTurmas();
+                    Toast.makeText(this.getApplicationContext(), R.string.lesson_saved,
+                            Toast.LENGTH_SHORT).show();
                 }
                 break;
         }
@@ -105,14 +118,14 @@ public class MainActivity extends AppCompatActivity
             public void onClick(View view) {
                 Intent i = new Intent(getApplicationContext(), AulaActivity.class);
                 i.putExtra("turma", turma.getCodigo());
-                startActivity(i);
+                startActivityForResult(i, LESSON_EDIT);
             }
         });
 
         //configura o menu lateral
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
-        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
-                this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
+        ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(this, drawer, toolbar,
+                R.string.navigation_drawer_open, R.string.navigation_drawer_close);
         drawer.addDrawerListener(toggle);
         toggle.syncState();
 

@@ -53,7 +53,8 @@ public class Turma {
             //é uma nova turma - CREATE
             SQLiteHelper.criaTurma(context, this);
         } else {
-            //TODO turma já existente - UPDATE
+            //turma já existente - UPDATE
+            SQLiteHelper.editaTurma(context, this);
         }
     }
 

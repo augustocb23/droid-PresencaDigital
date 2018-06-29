@@ -9,13 +9,6 @@ import android.support.v7.app.AlertDialog;
 import android.widget.EditText;
 
 public class AlunoDialog extends DialogFragment {
-    /* The activity that creates an instance of this dialog fragment must
-     * implement this interface in order to receive event callbacks.
-     * Each method passes the DialogFragment in case the host needs to query it. */
-    public interface DialogListener {
-        void onDialogPositiveClick(AlunoDialog dialog);
-    }
-
     // Use this instance of the interface to deliver action events
     DialogListener mListener;
     EditText name;
@@ -24,17 +17,9 @@ public class AlunoDialog extends DialogFragment {
     @Override
     public void onAttach(Activity activity) {
         super.onAttach(activity);
-        // Verify that the host activity implements the callback interface
-        try {
-            // Instantiate the DialogListener so we can send events to the host
-            mListener = (DialogListener) activity;
-            name = activity.findViewById(R.id.student_name);
-
-        } catch (ClassCastException e) {
-            // The activity doesn't implement the interface, throw exception
-            throw new ClassCastException(activity.toString()
-                    + " must implement DialogListener");
-        }
+        // Instantiate the DialogListener so we can send events to the host
+        mListener = (DialogListener) activity;
+        name = activity.findViewById(R.id.student_name);
     }
 
     @Override
@@ -54,6 +39,13 @@ public class AlunoDialog extends DialogFragment {
                 .setNegativeButton(R.string.cancel, null);
         // Create the AlertDialog object and return it
         return builder.create();
+    }
+
+    /* The activity that creates an instance of this dialog fragment must
+     * implement this interface in order to receive event callbacks.
+     * Each method passes the DialogFragment in case the host needs to query it. */
+    public interface DialogListener {
+        void onDialogPositiveClick(AlunoDialog dialog);
     }
 
 }

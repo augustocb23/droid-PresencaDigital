@@ -7,6 +7,7 @@ import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.design.widget.Snackbar;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -99,23 +100,29 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 //busca o aluno
                 final Aluno aluno = turma.getAlunos().get(position);
-                AlertDialog.Builder builder = new AlertDialog.Builder(TurmaActivity.this);
-                builder.setTitle(getString(R.string.student_remove)).
-                        setMessage(String.format(getString(R.string.student_remove_question),
-                                aluno.toString(), turma.toString()))
-                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
-                            @Override
-                            public void onClick(DialogInterface dialog, int which) {
-                                //adiciona à lista de removidos (para excluir do banco)
-                                if (aluno.getCodigo() != -1)
+                if (aluno.getCodigo() != -1) {
+                    //se o aluno estiver cadastrado no banco, pede confirmação
+                    AlertDialog.Builder builder = new AlertDialog.Builder(TurmaActivity.this);
+                    builder.setTitle(getString(R.string.student_remove)).
+                            setMessage(String.format(getString(R.string.student_remove_question),
+                                    aluno.toString(), turma.toString()))
+                            .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialog, int which) {
+                                    //adiciona à lista de removidos (para excluir do banco)
                                     turma.getRemovidos().add(aluno);
-                                //remove da lista
-                                turma.getAlunos().remove(aluno);
-                                adapter.notifyDataSetChanged();
-                            }
-                        })
-                        .setNegativeButton(R.string.no, null);
-                builder.create().show();
+                                    //remove da lista
+                                    turma.getAlunos().remove(aluno);
+                                    adapter.notifyDataSetChanged();
+                                }
+                            })
+                            .setNegativeButton(R.string.no, null);
+                    builder.create().show();
+                } else {
+                    //se não tem cadastro, remove direto
+                    turma.getAlunos().remove(aluno);
+                    adapter.notifyDataSetChanged();
+                }
                 return true;
             }
         });
@@ -133,6 +140,10 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         EditText name = dialog.getDialog().findViewById(R.id.student_name);
         turma.getAlunos().add(new Aluno(name.getText().toString()));
         adapter.notifyDataSetChanged();
+        if (turma.getCodigo() != -1) {
+            Snackbar.make(this.findViewById(R.id.list_class),
+                    R.string.student_add, Snackbar.LENGTH_LONG).show();
+        }
     }
 
     @Override
