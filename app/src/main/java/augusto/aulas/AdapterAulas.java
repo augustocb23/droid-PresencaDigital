@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.BaseAdapter;
-import android.widget.EditText;
 import android.widget.TextView;
 
 import java.text.SimpleDateFormat;
@@ -41,8 +40,8 @@ public class AdapterAulas extends BaseAdapter {
         tema.setText(aula.toString());
         //define a data
         TextView data = view.findViewById(R.id.lesson_date);
-        data.setText(new SimpleDateFormat("EEE dd/MM/yyyy", Locale.getDefault())
-                .format(aula.getData()));
+        data.setText(new SimpleDateFormat("DD/MM/yyyy",
+                Locale.getDefault()).format(aula.getData()));
         return view;
     }
 

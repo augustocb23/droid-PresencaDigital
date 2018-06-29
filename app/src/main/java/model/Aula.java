@@ -18,7 +18,12 @@ public class Aula {
     }
 
     public void salva(Context context, Turma turma) {
-        SQLiteHelper.criaAula(context, turma, this);
+        if (codigo == -1)
+            //é uma nova - CREATE
+            SQLiteHelper.criaAula(context, turma, this);
+        else
+            //edição - UPDATE
+            SQLiteHelper.editaAula(context, turma, this);
     }
 
     @Override

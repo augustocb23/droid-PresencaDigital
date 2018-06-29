@@ -33,7 +33,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:inputType="date" />
+        android:inputType="date"
+        android:focusable="false"
+        android:onClick="showDatePickerDialog" />
 
     <android.support.v4.widget.NestedScrollView
         android:layout_width="match_parent"

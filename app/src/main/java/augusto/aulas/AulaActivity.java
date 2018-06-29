@@ -1,10 +1,12 @@
 package augusto.aulas;
 
+import android.app.DialogFragment;
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
@@ -16,7 +18,7 @@ import java.util.Locale;
 import model.Aula;
 import model.Turma;
 
-public class AulaActivity extends AppCompatActivity {
+public class AulaActivity extends AppCompatActivity implements DataDialog.DialogListener {
     Aula aula;
     Turma turma;
     AdapterFaltas adapter;
@@ -38,7 +40,7 @@ public class AulaActivity extends AppCompatActivity {
             EditText tema = findViewById(R.id.lesson_theme);
             tema.setText(aula.toString());
             EditText data = findViewById(R.id.lesson_date);
-            data.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+            data.setText(new SimpleDateFormat("EEE dd/MM/yyyy", Locale.getDefault())
                     .format(aula.getData()));
             turma.buscaFrequencias(this.getApplicationContext(), aula.getCodigo());
         }
@@ -53,6 +55,14 @@ public class AulaActivity extends AppCompatActivity {
         getMenuInflater().inflate(R.menu.aula, menu);
         menu.findItem(R.id.delete).setVisible(aula.getCodigo() != -1);
         return true;
+    }
+
+    @Override
+    public void onDialogPositiveClick(Date date) {
+        aula.setData(date);
+        EditText data = findViewById(R.id.lesson_date);
+        data.setText(new SimpleDateFormat("EEE dd/MM/yyyy", Locale.getDefault())
+                .format(aula.getData()));
     }
 
     @Override
@@ -78,7 +88,6 @@ public class AulaActivity extends AppCompatActivity {
                     Toast.makeText(this, R.string.lesson_date_add, Toast.LENGTH_SHORT).show();
                     return false;
                 }
-                aula.setData(new Date()); //TODO buscar a data
                 aula.salva(getApplicationContext(), turma);
                 finish();
                 Toast.makeText(getApplicationContext(), R.string.lesson_saved, Toast.LENGTH_LONG).show();
@@ -97,5 +106,10 @@ public class AulaActivity extends AppCompatActivity {
             toolbar.setTitle(R.string.lesson_new);
         else
             toolbar.setTitle(R.string.lesson_edit);
+    }
+
+    public void showDatePickerDialog(View v) {
+        DialogFragment fragment = new DataDialog();
+        fragment.show(getFragmentManager(), "data");
     }
 }

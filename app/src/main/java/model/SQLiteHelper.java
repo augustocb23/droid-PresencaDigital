@@ -142,6 +142,26 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         conn.close();
     }
 
+    public static void editaAula(Context context, Turma turma, Aula aula) {
+        SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
+        ContentValues values = new ContentValues();
+        //altera a aula
+        values.put(AULA_TEMA, aula.toString());
+        values.put(AULA_DATA, aula.getData().getTime());
+        conn.update(AULA, values, AULA_COD + "=" + aula.getCodigo(), null);
+        values.clear();
+        //apaga todos os alunos
+        conn.delete(FREQUENCIA, AULA_COD + "=" + aula.getCodigo(), null);
+        //insere os alunos
+        for (Aluno aluno : turma.getAlunos()) {
+            values.put(AULA_COD, aula.getCodigo());
+            values.put(ALUNO_COD, aluno.getCodigo());
+            conn.insert(FREQUENCIA, null, values);
+            values.clear();
+        }
+        conn.close();
+    }
+
     public static ArrayList<Turma> listaTurmas(Context context) {
         SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
         ArrayList<Turma> turmas = new ArrayList<>();
