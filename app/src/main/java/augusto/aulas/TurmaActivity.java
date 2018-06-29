@@ -1,12 +1,13 @@
 package augusto.aulas;
 
 import android.app.DialogFragment;
-import android.content.ClipData;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -19,6 +20,8 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.nononsenseapps.filepicker.FilePickerActivity;
+
+import java.io.IOException;
 
 import augusto.aulas.AlunoDialog.DialogListener;
 import model.Aluno;
@@ -34,8 +37,22 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         switch (requestCode) {
             case FILE_CHOOSE:
                 if (resultCode == RESULT_OK) {
-                    ClipData clip = data.getClipData();
                     Uri uri = data.getData();
+                    if (uri != null) {
+                        try {
+                            //lê o JSON e adiciona os alunos à turma
+                            turma.importaJson(getContentResolver().openInputStream(uri),
+                                    getResources().getString(R.string.name));
+                        } catch (IOException e) {
+                            String erro = getResources().getString(R.string.json_error)
+                                    + e.getClass().getName();
+                            Toast.makeText(getApplicationContext(), erro,
+                                    Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        }
+                    }
+                    //atualiza a lista
+                    adapter.notifyDataSetChanged();
                 }
                 break;
         }
@@ -106,13 +123,23 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         switch (id) {
             case R.id.json_import:
                 //muda para a Activity de seleção de arquivo
-                Intent i = new Intent(getApplicationContext(), FilePickerActivity.class);
+                final Intent i = new Intent(getApplicationContext(), FilePickerActivity.class);
                 i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
                 i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
                 i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
                 i.putExtra(FilePickerActivity.EXTRA_START_PATH,
-                        Environment.getRootDirectory().getPath());
-                startActivityForResult(i, FILE_CHOOSE);
+                        Environment.getExternalStorageDirectory().getPath());
+                //diálogo de instruções
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.json_select)).
+                        setMessage(String.format(getString(R.string.json_format), getString(R.string.name)))
+                        .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                startActivityForResult(i, FILE_CHOOSE);
+                            }
+                        });
+                builder.create().show();
                 return true;
             case R.id.save:
                 EditText nome = this.findViewById(R.id.class_name);
@@ -135,6 +162,7 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
 
     @Override
     public boolean onPrepareOptionsMenu(Menu menu) {
+        //só ativa a opção de importar se não tiver nenhum aluno
         menu.findItem(R.id.json_import).setEnabled(turma.getAlunos().isEmpty());
         return super.onPrepareOptionsMenu(menu);
     }

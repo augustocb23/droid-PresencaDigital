@@ -47,10 +47,10 @@ class AdapterFaltas extends BaseAdapter {
         });
         //preenchendo o total de faltas
         TextView faltas = view.findViewById(R.id.student_absences);
-        if (aluno.getPresencas() == null)
+        if (aluno.getAbsences() == null)
             faltas.setText(null);
         else
-            faltas.setText(String.format(view.getResources().getString(R.string.student_absence), aluno.getPresencas()));
+            faltas.setText(String.format(view.getResources().getString(R.string.student_absence), aluno.getAbsences()));
         return view;
     }
 

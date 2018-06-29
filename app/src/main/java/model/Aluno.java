@@ -3,8 +3,9 @@ package model;
 public class Aluno {
     private int codigo;
     private String nome;
+    //usados somente pela classe Aula
     private boolean present = false;
-    private Integer presencas;
+    private Integer absences;
 
     public Aluno(String n) {
         codigo = -1;
@@ -14,6 +15,14 @@ public class Aluno {
     @Override
     public String toString() {
         return nome;
+    }
+
+    public Integer getAbsences() {
+        return absences;
+    }
+
+    public void setAbsences(Integer absences) {
+        this.absences = absences;
     }
 
     public int getCodigo() {
@@ -28,16 +37,8 @@ public class Aluno {
         return nome;
     }
 
-    public Integer getPresencas() {
-        return presencas;
-    }
-
     public boolean isPresent() {
         return present;
-    }
-
-    public void setPresencas(Integer presencas) {
-        this.presencas = presencas;
     }
 
     public void setPresent(boolean present) {

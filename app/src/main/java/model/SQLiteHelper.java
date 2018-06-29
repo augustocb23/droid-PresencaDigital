@@ -55,7 +55,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     "(SELECT COUNT(cod_aula) FROM frequencia WHERE cod_aluno = ?)", args);
             if (c.moveToNext()) {
                 aluno.setPresent(c.getInt(0) != 0);
-                aluno.setPresencas(c.getInt(1));
+                aluno.setAbsences(c.getInt(1));
             }
             c.close();
         }
@@ -122,7 +122,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                 values.clear();
             }
         }
-        conn.close();
     }
 
     public static void criaTurma(Context c, Turma turma) {
@@ -139,7 +138,6 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             conn.insert(ALUNO, null, values);
             values.clear();
         }
-        conn.close();
     }
 
     public static void editaAula(Context context, Turma turma, Aula aula) {

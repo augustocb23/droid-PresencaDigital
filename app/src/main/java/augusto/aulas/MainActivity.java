@@ -110,9 +110,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        Toolbar titulo = findViewById(R.id.toolbar);
-        titulo.setTitle("Carregando...");
-
         if (id == R.id.action_class_add) {
             Intent i = new Intent(this, TurmaActivity.class);
             i.putExtra("codigo", -1);
