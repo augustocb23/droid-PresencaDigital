@@ -9,7 +9,9 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Locale;
 
 import model.Aula;
 import model.Turma;
@@ -26,13 +28,20 @@ public class AulaActivity extends AppCompatActivity {
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        //busca os dados da turma
+        //instancia a aula e busca os dados da turma
         aula = new Aula(getIntent().getIntExtra("codigo", -1));
         turma = Turma.carrega(getApplicationContext(), getIntent().getIntExtra("turma",
                 -1));
-        //busca as presenças de cada aluno
-        if (aula.getCodigo() != -1)
+        //busca as presenças de cada aluno e configura a lista
+        if (aula.getCodigo() != -1) {
+            aula.carrega(getApplicationContext());
+            EditText tema = findViewById(R.id.lesson_theme);
+            tema.setText(aula.toString());
+            EditText data = findViewById(R.id.lesson_date);
+            data.setText(new SimpleDateFormat("dd/MM/yyyy", Locale.getDefault())
+                    .format(aula.getData()));
             turma.buscaFrequencias(this.getApplicationContext(), aula.getCodigo());
+        }
         ListView lista = findViewById(R.id.lesson_students);
         adapter = new AdapterFaltas(turma.getAlunos(), this);
         lista.setAdapter(adapter);

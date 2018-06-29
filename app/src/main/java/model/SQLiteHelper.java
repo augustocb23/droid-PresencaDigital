@@ -32,6 +32,17 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    public static void buscaAula(Context context, Aula aula) {
+        SQLiteDatabase conn = new SQLiteHelper(context).getReadableDatabase();
+        String[] args = {String.valueOf(aula.getCodigo())};
+        Cursor c = conn.rawQuery("SELECT tema_aula, data_aula FROM aula WHERE cod_aula = ?", args);
+        if (c.moveToNext()) {
+            aula.setTema(c.getString(0));
+            aula.setData(new Date(c.getLong(1)));
+        }
+        c.close();
+    }
+
     public static void buscaFrequencias(Context context, Turma turma, int aula) {
         SQLiteDatabase conn = new SQLiteHelper(context).getReadableDatabase();
         String[] args = {String.valueOf(aula), "", String.valueOf(turma.getCodigo()), ""};

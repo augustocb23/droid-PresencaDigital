@@ -33,7 +33,7 @@ class AdapterFaltas extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
-        final View view = act.getLayoutInflater().inflate(R.layout.student_checkbox, parent, false);
+        View view = act.getLayoutInflater().inflate(R.layout.student_checkbox, parent, false);
         final Aluno aluno = alunos.get(position);
         //definindo nome e presença
         CheckBox checkbox = view.findViewById(R.id.student_checkbox);

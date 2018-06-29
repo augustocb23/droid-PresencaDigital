@@ -13,6 +13,10 @@ public class Aula {
         this.codigo = codigo;
     }
 
+    public void carrega(Context context) {
+        SQLiteHelper.buscaAula(context, this);
+    }
+
     public void salva(Context context, Turma turma) {
         SQLiteHelper.criaAula(context, turma, this);
     }
@@ -26,12 +30,12 @@ public class Aula {
         return codigo;
     }
 
-    public Date getData() {
-        return data;
-    }
-
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    public Date getData() {
+        return data;
     }
 
     public void setData(Date data) {

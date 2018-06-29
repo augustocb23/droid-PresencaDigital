@@ -14,21 +14,19 @@ import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.AdapterView;
-import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import java.util.ArrayList;
 
-import model.Aula;
 import model.Turma;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
     Turma turma;
     ArrayList<Turma> lista_turmas;
-    ArrayAdapter<Aula> adapter;
+    AdapterAulas adapter;
 
     private void carregaTurma() {
         //exibe o nome no título
@@ -36,24 +34,15 @@ public class MainActivity extends AppCompatActivity
         titulo.setTitle(turma.toString());
         //configura a lista de aulas
         ListView lista = findViewById(R.id.list_lessons);
-        adapter = new ArrayAdapter<>(this, android.R.layout.simple_list_item_1,
-                turma.getAulas());
+        adapter = new AdapterAulas(turma.getAulas(), this);
         lista.setAdapter(adapter);
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(MainActivity.this.getApplicationContext(), R.string.hold_to_edit,
-                        Toast.LENGTH_SHORT).show();
-            }
-        });
-        lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
-            @Override
-            public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
                 Intent i = new Intent(getApplicationContext(), AulaActivity.class);
                 i.putExtra("codigo", turma.getAulas().get(position).getCodigo());
                 i.putExtra("turma", turma.getCodigo());
                 startActivity(i);
-                return true;
             }
         });
         //configura os dados no cabeçalho da barra lateral
