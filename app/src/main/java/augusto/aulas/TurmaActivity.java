@@ -1,7 +1,11 @@
 package augusto.aulas;
 
 import android.app.DialogFragment;
+import android.content.ClipData;
+import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
@@ -14,13 +18,28 @@ import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.Toast;
 
+import com.nononsenseapps.filepicker.FilePickerActivity;
+
 import augusto.aulas.AlunoDialog.DialogListener;
 import model.Aluno;
 import model.Turma;
 
 public class TurmaActivity extends AppCompatActivity implements DialogListener {
+    private static final int FILE_CHOOSE = 0;
     Turma turma;
     ArrayAdapter<Aluno> adapter;
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case FILE_CHOOSE:
+                if (resultCode == RESULT_OK) {
+                    ClipData clip = data.getClipData();
+                    Uri uri = data.getData();
+                }
+                break;
+        }
+    }
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -63,13 +82,6 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
     }
 
     @Override
-    public void onDialogPositiveClick(AlunoDialog dialog) {
-        EditText name = dialog.getDialog().findViewById(R.id.student_name);
-        turma.getAlunos().add(new Aluno(name.getText().toString()));
-        adapter.notifyDataSetChanged();
-    }
-
-    @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.turma, menu);
@@ -77,9 +89,10 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
     }
 
     @Override
-    public boolean onPrepareOptionsMenu(Menu menu) {
-        menu.findItem(R.id.json_import).setEnabled(turma.getAlunos().isEmpty());
-        return super.onPrepareOptionsMenu(menu);
+    public void onDialogPositiveClick(AlunoDialog dialog) {
+        EditText name = dialog.getDialog().findViewById(R.id.student_name);
+        turma.getAlunos().add(new Aluno(name.getText().toString()));
+        adapter.notifyDataSetChanged();
     }
 
     @Override
@@ -92,7 +105,14 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.json_import:
-                //TODO
+                //muda para a Activity de seleção de arquivo
+                Intent i = new Intent(getApplicationContext(), FilePickerActivity.class);
+                i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
+                i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
+                i.putExtra(FilePickerActivity.EXTRA_MODE, FilePickerActivity.MODE_FILE);
+                i.putExtra(FilePickerActivity.EXTRA_START_PATH,
+                        Environment.getRootDirectory().getPath());
+                startActivityForResult(i, FILE_CHOOSE);
                 return true;
             case R.id.save:
                 EditText nome = this.findViewById(R.id.class_name);
@@ -111,6 +131,12 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         }
 
         return super.onOptionsItemSelected(item);
+    }
+
+    @Override
+    public boolean onPrepareOptionsMenu(Menu menu) {
+        menu.findItem(R.id.json_import).setEnabled(turma.getAlunos().isEmpty());
+        return super.onPrepareOptionsMenu(menu);
     }
 }
 

@@ -16,6 +16,6 @@
         android:id="@+id/action_class_add"
         android:checkableBehavior="single"
         android:icon="@drawable/ic_group_add_black_24dp"
-        android:title="@string/action_turma_add" />
+        android:title="@string/class_new" />
 
 </menu>

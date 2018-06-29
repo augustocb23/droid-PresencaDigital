@@ -1,13 +1,12 @@
 <resources>
-    <string name="app_name">Aulas</string>
+    <string name="app_name">Presença Digital</string>
     <string name="navigation_drawer_open">Turmas</string>
     <string name="navigation_drawer_close">Voltar</string>
     <string name="action_settings">Opções</string>
     <string name="export">Exportar</string>
     <string name="share">Compartilhar</string>
     <string name="send">Enviar</string>
-    <string name="action_turma_edit">Editar</string>
-    <string name="action_turma_add">Nova turma</string>
+    <string name="edit">Editar</string>
     <string name="classes">Turmas</string>
     <string name="title_activity_turma">Turma</string>
     <string name="class_name">Nome da turma</string>
