@@ -13,6 +13,8 @@ public class Turma {
     private int codigo;
     private ArrayList<Aluno> alunos = new ArrayList<>();
     private ArrayList<Aula> aulas = new ArrayList<>();
+    //usado somente pela classe Turma
+    private ArrayList<Aluno> removidos;
 
     public Turma(int i) {
         codigo = i;
@@ -74,6 +76,12 @@ public class Turma {
 
     public void setCodigo(int codigo) {
         this.codigo = codigo;
+    }
+
+    public ArrayList<Aluno> getRemovidos() {
+        if (removidos == null)
+            removidos = new ArrayList<>();
+        return removidos;
     }
 
     public void setNome(String nome) {

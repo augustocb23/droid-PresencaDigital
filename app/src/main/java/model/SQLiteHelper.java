@@ -54,8 +54,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
                     "(SELECT COUNT(cod_aula) FROM aula WHERE cod_turma = ?) -" +
                     "(SELECT COUNT(cod_aula) FROM frequencia WHERE cod_aluno = ?)", args);
             if (c.moveToNext()) {
-                aluno.setPresent(c.getInt(0) != 0);
-                aluno.setAbsences(c.getInt(1));
+                aluno.setPresente(c.getInt(0) != 0);
+                aluno.setPresencas(c.getInt(1));
             }
             c.close();
         }
@@ -115,7 +115,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         values.clear();
         //cadastra as frequências
         for (Aluno aluno : turma.getAlunos()) {
-            if (aluno.isPresent()) {
+            if (aluno.isPresente()) {
                 values.put(AULA_COD, aula.getCodigo());
                 values.put(ALUNO_COD, aluno.getCodigo());
                 conn.insert(FREQUENCIA, null, values);

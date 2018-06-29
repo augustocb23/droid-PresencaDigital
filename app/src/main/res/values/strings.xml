@@ -32,7 +32,7 @@
     <string name="lesson_theme">Tema da aula</string>
     <string name="lesson_date">Data da aula</string>
     <string name="hold_to_change">Toque e segure para alternar presença</string>
-    <string name="student_absence">%1$d absences</string>
+    <string name="student_absence">%1$d presencas</string>
     <string name="lesson_delete">Excluir aula</string>
     <string name="lesson_saved">Aula salva</string>
     <string name="lesson_theme_add">Informe o tema da aula</string>
@@ -43,4 +43,8 @@
     <string name="json_select">Selecione o arquivo para importar</string>
     <string name="json_format">Deve estar no formato JSON e conter um campo \"%1$s\"</string>
     <string name="ok">OK</string>
+    <string name="student_remove">Remover aluno</string>
+    <string name="student_remove_question">Tem certeza que deseja remover %1$s da turma %2$s?\nTodas as frequências do aluno serão perdidas</string>
+    <string name="yes">Sim</string>
+    <string name="no">Não</string>
 </resources>

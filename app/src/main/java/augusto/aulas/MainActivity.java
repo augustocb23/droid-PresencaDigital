@@ -131,7 +131,7 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
-        if (id == R.id.action_class_add) {
+        if (id == R.id.class_new) {
             Intent i = new Intent(this, TurmaActivity.class);
             i.putExtra("codigo", -1);
             startActivityForResult(i, CLASS_CREATE);
@@ -153,8 +153,14 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
+        switch (id) {
+            case R.id.class_edit:
+                Intent i = new Intent(this, TurmaActivity.class);
+                i.putExtra("codigo", turma.getCodigo());
+                startActivityForResult(i, CLASS_CREATE);
+                break;
+            case R.id.settings:
+                return true;
         }
 
         return super.onOptionsItemSelected(item);

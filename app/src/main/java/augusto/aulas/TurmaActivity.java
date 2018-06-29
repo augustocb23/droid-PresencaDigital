@@ -75,6 +75,12 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                 dialog.show(getFragmentManager(), "AlunoDialog");
             }
         });
+        if (turma.getCodigo() != -1) {
+            //carrega o nome da turma
+            turma = Turma.carrega(getApplicationContext(), turma.getCodigo());
+            EditText tema = findViewById(R.id.class_name);
+            tema.setText(turma.toString());
+        }
 
         //configura a lista de alunos
         ListView lista = findViewById(R.id.list_class);
@@ -84,15 +90,32 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         lista.setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                Toast.makeText(TurmaActivity.this, R.string.hold_to_remove, Toast.LENGTH_SHORT).show();
+                Toast.makeText(TurmaActivity.this, R.string.hold_to_remove,
+                        Toast.LENGTH_SHORT).show();
             }
         });
         lista.setOnItemLongClickListener(new AdapterView.OnItemLongClickListener() {
             @Override
             public boolean onItemLongClick(AdapterView<?> parent, View view, int position, long id) {
-                //TODO confirmar
-                turma.getAlunos().remove(position);
-                adapter.notifyDataSetChanged();
+                //busca o aluno
+                final Aluno aluno = turma.getAlunos().get(position);
+                AlertDialog.Builder builder = new AlertDialog.Builder(TurmaActivity.this);
+                builder.setTitle(getString(R.string.student_remove)).
+                        setMessage(String.format(getString(R.string.student_remove_question),
+                                aluno.toString(), turma.toString()))
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                //adiciona à lista de removidos (para excluir do banco)
+                                if (aluno.getCodigo() != -1)
+                                    turma.getRemovidos().add(aluno);
+                                //remove da lista
+                                turma.getAlunos().remove(aluno);
+                                adapter.notifyDataSetChanged();
+                            }
+                        })
+                        .setNegativeButton(R.string.no, null);
+                builder.create().show();
                 return true;
             }
         });
@@ -168,6 +191,8 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
     public boolean onPrepareOptionsMenu(Menu menu) {
         //só ativa a opção de importar se não tiver nenhum aluno
         menu.findItem(R.id.json_import).setEnabled(turma.getAlunos().isEmpty());
+        //exibe o botão excluir
+        menu.findItem(R.id.delete).setVisible(turma.getCodigo() != -1);
         return super.onPrepareOptionsMenu(menu);
     }
 }

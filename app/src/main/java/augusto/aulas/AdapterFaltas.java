@@ -37,20 +37,20 @@ class AdapterFaltas extends BaseAdapter {
         final Aluno aluno = alunos.get(position);
         //definindo nome e presença
         CheckBox checkbox = view.findViewById(R.id.student_checkbox);
-        checkbox.setChecked(aluno.isPresent());
+        checkbox.setChecked(aluno.isPresente());
         checkbox.setText(aluno.getNome());
         checkbox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                aluno.setPresent(isChecked);
+                aluno.setPresente(isChecked);
             }
         });
         //preenchendo o total de faltas
         TextView faltas = view.findViewById(R.id.student_absences);
-        if (aluno.getAbsences() == null)
+        if (aluno.getPresencas() == null)
             faltas.setText(null);
         else
-            faltas.setText(String.format(view.getResources().getString(R.string.student_absence), aluno.getAbsences()));
+            faltas.setText(String.format(view.getResources().getString(R.string.student_absence), aluno.getPresencas()));
         return view;
     }
 
