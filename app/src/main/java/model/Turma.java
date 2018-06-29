@@ -28,6 +28,10 @@ public class Turma {
         return SQLiteHelper.listaTurmas(c);
     }
 
+    public void apaga(Context context) {
+        SQLiteHelper.apagaTurma(context, this);
+    }
+
     public void buscaFrequencias(Context context, int aula) {
         SQLiteHelper.buscaFrequencias(context, this, aula);
     }

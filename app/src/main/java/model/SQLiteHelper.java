@@ -32,6 +32,20 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    public static void apagaTurma(Context context, Turma turma) {
+        SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
+        //exclui a turma
+        conn.delete(TURMA, TURMA_COD + '=' + turma.getCodigo(), null);
+        //apaga os alunos
+        for (Aluno aluno : turma.getAlunos()) {
+            conn.delete(ALUNO, ALUNO_COD + '=' + aluno.getCodigo(), null);
+            conn.delete(FREQUENCIA, ALUNO_COD + '=' + aluno.getCodigo(), null);
+        }
+        //apaga as aulas
+        for (Aula aula : turma.getAulas())
+            conn.delete(AULA, AULA_COD + '=' + aula.getCodigo(), null);
+    }
+
     public static void buscaAula(Context context, Aula aula) {
         SQLiteDatabase conn = new SQLiteHelper(context).getReadableDatabase();
         String[] args = {String.valueOf(aula.getCodigo())};

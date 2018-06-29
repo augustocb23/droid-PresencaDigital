@@ -1,6 +1,7 @@
 package augusto.aulas;
 
 import android.app.DialogFragment;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -153,7 +154,7 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
 
-        //noinspection SimplifiableIfStatement
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (id) {
             case R.id.json_import:
                 //configura a Activity de seleção de arquivo
@@ -164,7 +165,6 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                 i.putExtra(FilePickerActivity.EXTRA_START_PATH,
                         Environment.getExternalStorageDirectory().getPath());
                 //diálogo de instruções
-                AlertDialog.Builder builder = new AlertDialog.Builder(this);
                 builder.setTitle(getString(R.string.json_select)).
                         setMessage(String.format(getString(R.string.json_format), getString(R.string.name)))
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
@@ -179,19 +179,34 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
             case R.id.save:
                 EditText nome = this.findViewById(R.id.class_name);
                 if (nome.getText().length() == 0) {
-                    Toast.makeText(TurmaActivity.this, R.string.class_name_add, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.class_name_add, Toast.LENGTH_SHORT).show();
                     return false;
                 }
                 turma.setNome(nome.getText().toString());
                 if (turma.getAlunos().isEmpty()) {
-                    Toast.makeText(TurmaActivity.this, R.string.class_empty, Toast.LENGTH_SHORT).show();
+                    Toast.makeText(this, R.string.class_empty, Toast.LENGTH_SHORT).show();
                     return false;
                 }
-                turma.salva(this.getApplicationContext());
+                turma.salva(getApplicationContext());
                 Intent result = new Intent();
                 result.putExtra("codigo", turma.getCodigo());
                 setResult(turma.getCodigo() != -1 ? RESULT_OK : RESULT_CANCELED, result);
                 finish();
+                return true;
+            case R.id.delete:
+                //diálogo de instruções
+                builder.setTitle(getString(R.string.class_delete)).
+                        setMessage(String.format(getString(R.string.class_delete_text), turma.toString()))
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                turma.apaga(getApplicationContext());
+                                Intent result = new Intent();
+                                setResult(RESULT_OK, result);
+                                finish();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                builder.create().show();
                 return true;
         }
 

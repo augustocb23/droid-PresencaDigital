@@ -48,4 +48,7 @@
     <string name="yes">Sim</string>
     <string name="no">Não</string>
     <string name="student_add">O novo aluno receberá presença em todas as aulas anteriores</string>
+    <string name="lesson_delete_text">Excluir a aula %1$s?</string>
+    <string name="class_delete_text">Excluir a turma %1$s? Os dados de alunos também serão apagados</string>
+    <string name="class_deleted">Turma excluída</string>
 </resources>

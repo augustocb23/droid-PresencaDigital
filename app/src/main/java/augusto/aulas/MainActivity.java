@@ -74,11 +74,16 @@ public class MainActivity extends AppCompatActivity
             case CLASS_CREATE:
                 if (resultCode == RESULT_OK) {
                     int codigo = data.getIntExtra("codigo", -1);
-                    if (codigo != -1)
+                    if (codigo != -1) {
                         turma = Turma.carrega(this.getApplicationContext(), codigo);
+                        Toast.makeText(this.getApplicationContext(), R.string.class_saved,
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        turma = null;
+                        Toast.makeText(this.getApplicationContext(), R.string.class_deleted,
+                                Toast.LENGTH_SHORT).show();
+                    }
                     carregaTurmas();
-                    Toast.makeText(this.getApplicationContext(), R.string.class_saved,
-                            Toast.LENGTH_SHORT).show();
                 }
                 break;
             case LESSON_EDIT:
