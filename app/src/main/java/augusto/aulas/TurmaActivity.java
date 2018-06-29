@@ -122,7 +122,7 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
         //noinspection SimplifiableIfStatement
         switch (id) {
             case R.id.json_import:
-                //muda para a Activity de seleção de arquivo
+                //configura a Activity de seleção de arquivo
                 final Intent i = new Intent(getApplicationContext(), FilePickerActivity.class);
                 i.putExtra(FilePickerActivity.EXTRA_ALLOW_MULTIPLE, false);
                 i.putExtra(FilePickerActivity.EXTRA_ALLOW_CREATE_DIR, false);
@@ -136,6 +136,7 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                         .setPositiveButton(R.string.ok, new DialogInterface.OnClickListener() {
                             @Override
                             public void onClick(DialogInterface dialog, int which) {
+                                //inicia a Activity ao tocar em OK
                                 startActivityForResult(i, FILE_CHOOSE);
                             }
                         });
@@ -153,6 +154,9 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                     return false;
                 }
                 turma.salva(this.getApplicationContext());
+                Intent result = new Intent();
+                result.putExtra("codigo", turma.getCodigo());
+                setResult(turma.getCodigo() != -1 ? RESULT_OK : RESULT_CANCELED, result);
                 finish();
                 return true;
         }

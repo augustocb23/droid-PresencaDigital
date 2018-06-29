@@ -24,6 +24,7 @@ import model.Turma;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+    private final int CLASS_CREATE = 0;
     Turma turma;
     ArrayList<Turma> lista_turmas;
     AdapterAulas adapter;
@@ -51,6 +52,33 @@ public class MainActivity extends AppCompatActivity
         name.setText(turma.toString());
         TextView count = navigationView.getHeaderView(0).findViewById(R.id.lessons_count);
         count.setText(String.format(getResources().getString(R.string.lessons_count), turma.getAulas().size()));
+    }
+
+    private void carregaTurmas() {
+        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView.setNavigationItemSelectedListener(this);
+        Menu turmas = navigationView.getMenu().findItem(R.id.turmas).getSubMenu();
+        turmas.clear();
+        lista_turmas = Turma.lista(getApplicationContext());
+        for (Turma turma : lista_turmas) {
+            MenuItem item = turmas.add(Menu.NONE, turma.getCodigo(), Menu.NONE, turma.toString());
+            item.setIcon(R.drawable.ic_group_black_24dp);
+        }
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        switch (requestCode) {
+            case CLASS_CREATE:
+                if (resultCode == RESULT_OK) {
+                    int codigo = data.getIntExtra("codigo", -1);
+                    if (codigo != -1)
+                        turma = Turma.carrega(this.getApplicationContext(), codigo);
+                    carregaTurmas();
+                    Toast.makeText(this.getApplicationContext(), R.string.class_saved, Toast.LENGTH_SHORT).show();
+                }
+                break;
+        }
     }
 
     @Override
@@ -89,14 +117,7 @@ public class MainActivity extends AppCompatActivity
         toggle.syncState();
 
         //adiciona as turmas ao menu
-        NavigationView navigationView = findViewById(R.id.nav_view);
-        navigationView.setNavigationItemSelectedListener(this);
-        Menu turmas = navigationView.getMenu().findItem(R.id.turmas).getSubMenu();
-        lista_turmas = Turma.lista(getApplicationContext());
-        for (Turma turma : lista_turmas) {
-            MenuItem item = turmas.add(Menu.NONE, turma.getCodigo(), Menu.NONE, turma.toString());
-            item.setIcon(R.drawable.ic_group_black_24dp);
-        }
+        carregaTurmas();
     }
 
     @Override
@@ -113,9 +134,7 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.action_class_add) {
             Intent i = new Intent(this, TurmaActivity.class);
             i.putExtra("codigo", -1);
-            startActivity(i);
-            //TODO esperar o usuário cadastrar a turma
-            Toast.makeText(this.getApplicationContext(), R.string.class_created, Toast.LENGTH_SHORT).show();
+            startActivityForResult(i, CLASS_CREATE);
         } else {
             turma = Turma.carrega(this.getApplicationContext(), id);
             carregaTurma();
@@ -152,7 +171,8 @@ public class MainActivity extends AppCompatActivity
             startActivity(i);
             Toast.makeText(this.getApplicationContext(), R.string.class_first, Toast.LENGTH_SHORT).show();
         } else {
-            turma = Turma.carrega(this.getApplicationContext(), lista_turmas.get(0).getCodigo());
+            if (turma == null)
+                turma = Turma.carrega(this.getApplicationContext(), lista_turmas.get(0).getCodigo());
             carregaTurma();
         }
     }

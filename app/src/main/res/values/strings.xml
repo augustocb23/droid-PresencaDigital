@@ -22,7 +22,7 @@
     <string name="json_import">Importar…</string>
     <string name="class_">Turma</string>
     <string name="class_empty">Nenhum aluno adicionado</string>
-    <string name="class_created">Turma criada</string>
+    <string name="class_saved">Turma salva</string>
     <string name="lessons_count">%1$d aulas cadastradas</string>
     <string name="class_first">Cadastre a sua primeira turma</string>
     <string name="hold_to_edit">Toque e segure para alterar</string>
