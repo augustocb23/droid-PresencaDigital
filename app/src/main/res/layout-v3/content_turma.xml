@@ -22,16 +22,10 @@
         android:hint="@string/class_"
         android:inputType="textPersonName" />
 
-    <android.support.v4.widget.NestedScrollView
+    <ListView
+        android:id="@+id/list_class"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:fillViewport="true">
-
-        <ListView
-            android:id="@+id/list_class"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical" />
-    </android.support.v4.widget.NestedScrollView>
+        android:orientation="vertical" />
 
 </LinearLayout>

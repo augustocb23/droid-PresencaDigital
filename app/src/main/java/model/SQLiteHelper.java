@@ -130,7 +130,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         //cadastra a aula, salvando o código
-        values.put(AULA_TEMA, aula.toString());
+        values.put(AULA_TEMA, aula.toString().trim());
         values.put(AULA_DATA, aula.getData().getTime());
         values.put(TURMA_COD, turma.getCodigo());
         aula.setCodigo((int) conn.insert(AULA, null, values));
@@ -150,12 +150,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase conn = new SQLiteHelper(c).getWritableDatabase();
         ContentValues values = new ContentValues();
         //cadastra a turma, salvando o código
-        values.put(TURMA_NOME, turma.toString());
+        values.put(TURMA_NOME, turma.toString().trim());
         turma.setCodigo((int) conn.insert(TURMA, null, values));
         values.clear();
         //insere os alunos
         for (Aluno aluno : turma.getAlunos()) {
-            values.put(ALUNO_NOME, aluno.toString());
+            values.put(ALUNO_NOME, aluno.toString().trim());
             values.put(TURMA_COD, turma.getCodigo());
             conn.insert(ALUNO, null, values);
             values.clear();
@@ -166,7 +166,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         //altera a aula
-        values.put(AULA_TEMA, aula.toString());
+        values.put(AULA_TEMA, aula.toString().trim());
         values.put(AULA_DATA, aula.getData().getTime());
         conn.update(AULA, values, AULA_COD + '=' + aula.getCodigo(), null);
         values.clear();
@@ -187,7 +187,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
         ContentValues values = new ContentValues();
         //altera o nome da turma
-        values.put(TURMA_NOME, turma.toString());
+        values.put(TURMA_NOME, turma.toString().trim());
         conn.update(TURMA, values, TURMA_COD + '=' + turma.getCodigo(), null);
         values.clear();
         //apaga os alunos da lista de removidos
@@ -199,7 +199,7 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             //cadastra os novos alunos
             if (aluno.getCodigo() == -1) {
                 //insere o aluno
-                values.put(ALUNO_NOME, aluno.toString());
+                values.put(ALUNO_NOME, aluno.toString().trim());
                 values.put(TURMA_COD, turma.getCodigo());
                 conn.insert(ALUNO, null, values);
                 values.clear();
