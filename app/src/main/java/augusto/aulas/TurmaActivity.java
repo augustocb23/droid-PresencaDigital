@@ -126,6 +126,9 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                 return true;
             }
         });
+
+        //exibe as instruções
+        Snackbar.make(toolbar, R.string.class_instructions, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -192,7 +195,7 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                 turma.salva(getApplicationContext());
                 Intent result = new Intent();
                 result.putExtra("codigo", turma.getCodigo());
-                setResult(turma.getCodigo() != -1 ? RESULT_OK : RESULT_CANCELED, result);
+                setResult(RESULT_OK, result);
                 finish();
                 return true;
             case R.id.delete:

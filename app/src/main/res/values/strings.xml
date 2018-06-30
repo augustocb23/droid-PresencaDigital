@@ -49,4 +49,6 @@
     <string name="class_delete_text">Excluir a turma %1$s? Os dados de alunos também serão apagados</string>
     <string name="class_deleted">Turma excluída</string>
     <string name="lesson_deleted">Aula excluída</string>
+    <string name="main_instructions">Toque no botão verde para cadastrar aulas</string>
+    <string name="class_instructions">Toque no botão verde para adicionar alunos</string>
 </resources>

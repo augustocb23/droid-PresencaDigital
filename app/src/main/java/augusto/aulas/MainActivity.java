@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.support.annotation.NonNull;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.NavigationView;
+import android.support.design.widget.Snackbar;
 import android.support.v4.view.GravityCompat;
 import android.support.v4.widget.DrawerLayout;
 import android.support.v7.app.ActionBarDrawerToggle;
@@ -144,6 +145,9 @@ public class MainActivity extends AppCompatActivity
 
         //adiciona as turmas ao menu
         carregaTurmas();
+
+        //exibe as instruções
+        Snackbar.make(toolbar, R.string.main_instructions, Snackbar.LENGTH_LONG).show();
     }
 
     @Override
@@ -200,7 +204,7 @@ public class MainActivity extends AppCompatActivity
             //se não houver nenhuma, abre a Activity Turmas
             Intent i = new Intent(this, TurmaActivity.class);
             i.putExtra("codigo", -1);
-            startActivity(i);
+            startActivityForResult(i, CLASS_CREATE);
             Toast.makeText(this.getApplicationContext(), R.string.class_first, Toast.LENGTH_SHORT).show();
         } else {
             if (turma == null)
