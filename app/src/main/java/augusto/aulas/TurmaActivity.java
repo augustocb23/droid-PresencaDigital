@@ -141,7 +141,12 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
     @Override
     public void onDialogPositiveClick(AlunoDialog dialog) {
         EditText name = dialog.getDialog().findViewById(R.id.student_name);
-        turma.getAlunos().add(new Aluno(name.getText().toString()));
+        String aluno = name.getText().toString().trim();
+        if (aluno.isEmpty()){
+            Toast.makeText(this, R.string.student_name_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        turma.getAlunos().add(new Aluno(aluno));
         adapter.notifyDataSetChanged();
         if (turma.getCodigo() != -1) {
             Snackbar.make(this.findViewById(R.id.list_class),
@@ -183,7 +188,7 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                 return true;
             case R.id.save:
                 EditText nome = this.findViewById(R.id.class_name);
-                if (nome.getText().length() == 0) {
+                if (nome.getText().toString().trim().isEmpty()) {
                     Toast.makeText(this, R.string.class_name_add, Toast.LENGTH_SHORT).show();
                     return false;
                 }

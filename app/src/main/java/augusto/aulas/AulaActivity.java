@@ -81,7 +81,7 @@ public class AulaActivity extends AppCompatActivity implements DataDialog.Dialog
                 break;
             case R.id.save:
                 EditText tema = this.findViewById(R.id.lesson_theme);
-                if (tema.getText().length() == 0) {
+                if (tema.getText().toString().trim().isEmpty()) {
                     Toast.makeText(this, R.string.lesson_theme_add, Toast.LENGTH_SHORT).show();
                     return false;
                 }
