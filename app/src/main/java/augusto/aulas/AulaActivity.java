@@ -1,8 +1,10 @@
 package augusto.aulas;
 
 import android.app.DialogFragment;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
@@ -95,6 +97,22 @@ public class AulaActivity extends AppCompatActivity implements DataDialog.Dialog
                 setResult(RESULT_OK, result);
                 finish();
                 break;
+            case R.id.delete:
+                AlertDialog.Builder builder = new AlertDialog.Builder(this);
+                builder.setTitle(getString(R.string.lesson_delete)).
+                        setMessage(String.format(getString(R.string.lesson_delete_text), aula.toString()))
+                        .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {
+                            @Override
+                            public void onClick(DialogInterface dialog, int which) {
+                                aula.apaga(getApplicationContext());
+                                Intent result = new Intent();
+                                result.putExtra("codigo", turma.getCodigo());
+                                result.putExtra("editado", false);
+                                setResult(RESULT_OK, result);
+                                finish();
+                            }
+                        }).setNegativeButton(R.string.no, null);
+                builder.create().show();
         }
 
         return super.onOptionsItemSelected(item);

@@ -1,5 +1,6 @@
 package augusto.aulas;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ class AdapterFaltas extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        @SuppressLint("ViewHolder")
         View view = act.getLayoutInflater().inflate(R.layout.student_checkbox, parent, false);
         final Aluno aluno = alunos.get(position);
         //definindo nome e presença

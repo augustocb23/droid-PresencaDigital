@@ -13,6 +13,10 @@ public class Aula {
         this.codigo = codigo;
     }
 
+    public void apaga(Context context) {
+        SQLiteHelper.apagaAula(context, this);
+    }
+
     public void carrega(Context context) {
         SQLiteHelper.buscaAula(context, this);
     }

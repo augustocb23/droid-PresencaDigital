@@ -89,14 +89,22 @@ public class MainActivity extends AppCompatActivity
             case LESSON_EDIT:
                 if (resultCode == RESULT_OK) {
                     int codigo = data.getIntExtra("codigo", -1);
+                    boolean editado = data.getBooleanExtra("editado", true);
                     //atualiza os dados da turma
                     turma = Turma.carrega(this.getApplicationContext(), codigo);
                     carregaTurmas();
-                    Toast.makeText(this.getApplicationContext(), R.string.lesson_saved,
-                            Toast.LENGTH_SHORT).show();
+                    //se falso, foi uma edição
+                    if (editado) {
+                        Toast.makeText(this.getApplicationContext(), R.string.lesson_saved,
+                                Toast.LENGTH_SHORT).show();
+                    } else {
+                        Toast.makeText(this.getApplicationContext(), R.string.lesson_deleted,
+                                Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }
+
     }
 
     @Override

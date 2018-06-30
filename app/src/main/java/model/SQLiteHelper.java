@@ -32,6 +32,14 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         super(context, name, factory, version);
     }
 
+    public static void apagaAula(Context context, Aula aula) {
+        SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
+        //exclui a aula
+        conn.delete(AULA, AULA_COD + '=' + aula.getCodigo(), null);
+        //exclui as frequências
+        conn.delete(FREQUENCIA, AULA_COD + '=' + aula.getCodigo(), null);
+    }
+
     public static void apagaTurma(Context context, Turma turma) {
         SQLiteDatabase conn = new SQLiteHelper(context).getWritableDatabase();
         //exclui a turma
@@ -166,10 +174,12 @@ public class SQLiteHelper extends SQLiteOpenHelper {
         conn.delete(FREQUENCIA, AULA_COD + '=' + aula.getCodigo(), null);
         //insere os alunos
         for (Aluno aluno : turma.getAlunos()) {
-            values.put(AULA_COD, aula.getCodigo());
-            values.put(ALUNO_COD, aluno.getCodigo());
-            conn.insert(FREQUENCIA, null, values);
-            values.clear();
+            if (aluno.isPresente()) {
+                values.put(AULA_COD, aula.getCodigo());
+                values.put(ALUNO_COD, aluno.getCodigo());
+                conn.insert(FREQUENCIA, null, values);
+                values.clear();
+            }
         }
     }
 
@@ -185,8 +195,8 @@ public class SQLiteHelper extends SQLiteOpenHelper {
             conn.delete(ALUNO, ALUNO_COD + '=' + aluno.getCodigo(), null);
             conn.delete(FREQUENCIA, ALUNO_COD + '=' + aluno.getCodigo(), null);
         }
-        //cadastra os novos alunos
         for (Aluno aluno : turma.getAlunos()) {
+            //cadastra os novos alunos
             if (aluno.getCodigo() == -1) {
                 //insere o aluno
                 values.put(ALUNO_NOME, aluno.toString());

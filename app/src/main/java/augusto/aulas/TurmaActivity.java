@@ -1,7 +1,6 @@
 package augusto.aulas;
 
 import android.app.DialogFragment;
-import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.net.Uri;
@@ -156,6 +155,9 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
 
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
         switch (id) {
+            case R.id.cancel:
+                finish();
+                break;
             case R.id.json_import:
                 //configura a Activity de seleção de arquivo
                 final Intent i = new Intent(getApplicationContext(), FilePickerActivity.class);
@@ -194,7 +196,6 @@ public class TurmaActivity extends AppCompatActivity implements DialogListener {
                 finish();
                 return true;
             case R.id.delete:
-                //diálogo de instruções
                 builder.setTitle(getString(R.string.class_delete)).
                         setMessage(String.format(getString(R.string.class_delete_text), turma.toString()))
                         .setPositiveButton(R.string.yes, new DialogInterface.OnClickListener() {

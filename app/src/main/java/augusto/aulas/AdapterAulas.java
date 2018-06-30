@@ -1,5 +1,6 @@
 package augusto.aulas;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.view.View;
 import android.view.ViewGroup;
@@ -33,6 +34,7 @@ public class AdapterAulas extends BaseAdapter {
 
     @Override
     public View getView(int position, View convertView, ViewGroup parent) {
+        @SuppressLint("ViewHolder")
         View view = act.getLayoutInflater().inflate(R.layout.lessons_list, parent, false);
         final Aula aula = aulas.get(position);
         //define o tema
